@@ -4,6 +4,8 @@
 3. how to tell the blade to pxe boot via api call
 '''
 
+from UcsSdk import *
+
 def list_all_service_profiles(handle):
     '''
         This will list all the service profiles under org-root
