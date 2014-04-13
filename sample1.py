@@ -29,14 +29,16 @@ def list_mac_address_of_all_service_profiles(handle, sp_name = None):
         print "Vnic Name : [{}] , Dn : [{}], Address : [{}]".format(vnic.Name, vnic.Dn, vnic.Addr )
 
         
-def find_sp_by_mac(handle, mac_addr):
+def find_sp_by_mac_addr(handle, mac_addr):
     # Single mac , query it directly 
-    # if the mac_addr is a list , query the whole vnicEther , build a dictionary 
     handle.StartTransaction()
     rsp = handle.GetManagedObject(None, None,{"Dn":"org-root"})
-    rsp = handle.GetManagedObject(rsp, "vnicEther",{'Addr': mac_addr}, inHierarchical=False)
+    rsp = handle.GetManagedObject(rsp, "lsServer",{"Type":"instance"}, inHierarchical=False)
+    rsp = handle.GetManagedObject(rsp, "vnicEther",{"Addr":mac_addr}, inHierarchical=True)
     handle.CompleteTransaction()
     
+    if len(rsp) == 0 :
+        print "No vnic found "
     for vnic in rsp:
         print "Vnic Name : [{}] , Dn : [{}], Address : [{}]".format(vnic.Name, vnic.Dn, vnic.Addr )
     
@@ -46,5 +48,7 @@ if __name__ == "__main__":
         handle.Login("10.193.159.76","admin","Nbv12345")    
         list_all_service_profiles(handle)
         list_mac_address_of_all_service_profiles(handle)
+        find_sp_by_mac_addr(handle, r'00:25:B5:A1:17:01')
+        
     finally:
         handle.Logout()
