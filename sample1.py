@@ -15,9 +15,10 @@ def list_all_service_profiles(handle):
     '''
     rsp = handle.GetManagedObject(None, None,{"Dn":"org-root"})
     rsp = handle.GetManagedObject(rsp, "lsServer",{"Type":"instance"}, inHierarchical=False)
-    
     for sp in rsp:
-        print "Service Profile Name : [{}] , Dn : [{}]".format(sp.Name, sp.Dn)
+        print "Service Profile Name :{}, Dn : {}".format(sp.Name, sp.Dn)
+         
+       
 
 def list_mac_address_of_all_service_profiles(handle, sp_name = None):
     #sp_name = 'a1c1b1_iscsi'
@@ -49,8 +50,8 @@ if __name__ == "__main__":
         handle = UcsHandle()
         handle.Login("10.193.159.76","admin","Nbv12345")    
         list_all_service_profiles(handle)
-        list_mac_address_of_all_service_profiles(handle)
-        find_sp_by_mac_addr(handle, r'00:25:B5:A1:17:01')
+        #list_mac_address_of_all_service_profiles(handle)
+        #find_sp_by_mac_addr(handle, r'00:25:B5:A1:17:01')
         
     finally:
         handle.Logout()
